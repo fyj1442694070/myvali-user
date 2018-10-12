@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.mapper.UserMapper">
+
+    <insert id="insertUser" parameterType="User">
+        insert into user
+        values(null,#{username},#{position},#{office},#{age},#{startTime},#{salary})
+    </insert>
+
+    <delete id="deleteUser">
+        delete from user where id=#{id};
+    </delete>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        set username=#{username},position=#{position},office=#{office},
+        age=#{age},startTime=#{startTime},salary=#{salary}
+        where id=#{id}
+    </update>
+
+    <select id="selectUserByPage" resultType="User">
+        select id,username,position,office,age,startTime,salary
+        from user
+        <where>
+            <if test="search !='' and search != null">
+                or id like '%${search}%'
+                or username like '%${search}%'
+                or position like '%${search}%'
+                or office like '%${search}%'
+                or age like '%${search}%'
+                or startTime like '%${search}%'
+                or salary like '%${search}%'
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="selectUserCount" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="search !='' and search != null">
+                or id like '%${search}%'
+                or username like '%${search}%'
+                or position like '%${search}%'
+                or office like '%${search}%'
+                or age like '%${search}%'
+                or startTime like '%${search}%'
+                or salary like '%${search}%'
+            </if>
+        </where>
+
+    </select>
+</mapper>
